@@ -1,8 +1,7 @@
 # Use postgres/example user/password credentials
-version: '3.1'
+version: "3.1"
 
 services:
-
   db:
     image: postgres
     restart: always
@@ -12,8 +11,11 @@ services:
     ports:
       - 5432:5432
 
-  adminer:
-    image: adminer
-    restart: always
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 80
     ports:
-      - 8080:8080
+      - 15432:80
