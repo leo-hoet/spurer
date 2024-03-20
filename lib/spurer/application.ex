@@ -17,9 +17,11 @@ defmodule Spurer.Application do
       # Start Finch
       {Finch, name: Spurer.Finch},
       # Start the Endpoint (http/https)
-      SpurerWeb.Endpoint
+      SpurerWeb.Endpoint,
       # Start a worker by calling: Spurer.Worker.start_link(arg)
-      # {Spurer.Worker, arg}
+      # {Spurer.Worker, arg},
+      {Registry, [keys: :unique, name: Spurer.BucketRegistry]},
+      {DynamicSupervisor, strategy: :one_for_one, name: Spurer.BucketSupervisor}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

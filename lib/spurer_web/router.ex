@@ -25,6 +25,7 @@ defmodule SpurerWeb.Router do
     pipe_through :api
     resources "/urls", UrlController, except: [:new, :edit]
     resources "/locations", LocationController, except: [:new, :edit]
+    resources "/buckets", BucketController, except: [:new, :edit]
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development

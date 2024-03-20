@@ -53,7 +53,6 @@ defmodule SpurerWeb.ProcessLive do
   end
 
   def handle_info(msg, socket) do
-    IO.inspect(msg)
     {:noreply, assign(socket, :locations, get_locations())}
   end
 end
