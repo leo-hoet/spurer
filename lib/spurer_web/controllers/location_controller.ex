@@ -6,6 +6,7 @@ defmodule SpurerWeb.LocationController do
 
   action_fallback SpurerWeb.FallbackController
 
+  @topic "location_updates"
   def index(conn, _params) do
     locations = Locations.list_locations()
     render(conn, :index, locations: locations)
@@ -18,6 +19,8 @@ defmodule SpurerWeb.LocationController do
       |> put_resp_header("location", ~p"/api/locations/#{location}")
       |> render(:show, location: location)
     end
+
+    SpurerWeb.Endpoint.broadcast(@topic, "aloha", "aloha")
   end
 
   def show(conn, %{"id" => id}) do

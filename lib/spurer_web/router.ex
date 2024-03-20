@@ -18,6 +18,7 @@ defmodule SpurerWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    live "/proc", ProcessLive
   end
 
   scope "/api", SpurerWeb do
