@@ -12,7 +12,13 @@ defmodule Spurer.Storage.Bucket do
 
   def start(name) do
     name = {:via, Registry, {Spurer.BucketRegistry, name}}
-    {:ok, _pid} = DynamicSupervisor.start_child(Spurer.BucketSupervisor, {__MODULE__, name: name})
+
+    with {:ok, pid} <-
+           DynamicSupervisor.start_child(Spurer.BucketSupervisor, {__MODULE__, name: name}) do
+      {:ok, pid}
+    else
+      {:error, {:already_started, pid}} -> {:ok, pid}
+    end
   end
 
   @impl true
@@ -32,5 +38,9 @@ defmodule Spurer.Storage.Bucket do
 
   def put_value(server, key, value) do
     GenServer.call(server, {:put, key, value})
+  end
+
+  def lookup(name) do
+    Registry.lookup(Spurer.BucketRegistry, name)
   end
 end

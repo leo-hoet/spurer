@@ -5,9 +5,25 @@ defmodule SpurerWeb.BucketController do
   alias Spurer.Storage.Bucket
 
   def index(conn, _params) do
-    random_str = for _ <- 1..10, into: "", do: <<Enum.random(~c"0123456789abcdef")>>
-    random_name = "Bucket: #{random_str}"
-    Bucket.start(random_name)
-    send_resp(conn, 201, random_name)
+    keys = Registry.select(Spurer.BucketRegistry, [{{:"$1", :_, :_}, [], [:"$1"]}]) |> Enum.sort()
+
+    render(conn, :index, buckets: keys)
+  end
+
+  def create(conn, %{"bucket" => bucket_name}) do
+    {:ok, _pid} = Bucket.start(bucket_name)
+
+    conn
+    |> put_status(:created)
+    |> render(:show, buckets: bucket_name)
+  end
+
+  def update(conn, %{"id" => bucket_name, "data" => data}) do
+    [bucket | _] = Bucket.lookup(bucket_name)
+    {bucket_pid, _} = bucket
+
+    Bucket.put_value(bucket_pid, Map.get(data, "key"), Map.get(data, "value"))
+
+    render(conn, :show_value, value: Map.get(data, "value"))
   end
 end
