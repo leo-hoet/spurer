@@ -1,5 +1,4 @@
 defmodule SpurerWeb.ProcessLive do
-  alias SpurerWeb.LocationJSON
   alias Spurer.Locations
   use SpurerWeb, :live_view
 

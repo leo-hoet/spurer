@@ -7,6 +7,14 @@ defmodule Spurer.Application do
 
   @impl true
   def start(_type, _args) do
+    topologies = [
+      example: [
+        strategy: Cluster.Strategy.Epmd,
+        config: [hosts: [:"host1@127.0.0.1", :"host2@127.0.0.1"]],
+      ]
+    ]
+
+
     children = [
       # Start the Telemetry supervisor
       SpurerWeb.Telemetry,
@@ -21,7 +29,8 @@ defmodule Spurer.Application do
       # Start a worker by calling: Spurer.Worker.start_link(arg)
       # {Spurer.Worker, arg},
       {Registry, [keys: :unique, name: Spurer.BucketRegistry]},
-      {DynamicSupervisor, strategy: :one_for_one, name: Spurer.BucketSupervisor}
+      {DynamicSupervisor, strategy: :one_for_one, name: Spurer.BucketSupervisor},
+      {Cluster.Supervisor, [topologies, [name: MyApp.ClusterSupervisor]]},
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
