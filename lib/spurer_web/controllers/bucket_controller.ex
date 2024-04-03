@@ -5,8 +5,7 @@ defmodule SpurerWeb.BucketController do
   alias Spurer.Storage.Bucket
 
   def index(conn, _params) do
-    keys = Registry.select(Spurer.BucketRegistry, [{{:"$1", :_, :_}, [], [:"$1"]}]) |> Enum.sort()
-
+    keys = Bucket.get_all_names()
     render(conn, :index, buckets: keys)
   end
 

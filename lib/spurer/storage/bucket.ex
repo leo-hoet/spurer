@@ -43,4 +43,9 @@ defmodule Spurer.Storage.Bucket do
   def lookup(name) do
     Registry.lookup(Spurer.BucketRegistry, name)
   end
+
+  def get_all_names() do
+    keys = Registry.select(Spurer.BucketRegistry, [{{:"$1", :_, :_}, [], [:"$1"]}]) |> Enum.sort()
+    keys
+  end
 end

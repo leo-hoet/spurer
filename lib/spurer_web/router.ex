@@ -19,6 +19,7 @@ defmodule SpurerWeb.Router do
 
     get "/", PageController, :home
     live "/proc", ProcessLive
+    live "/buckets", BucketsLive
   end
 
   scope "/api", SpurerWeb do
