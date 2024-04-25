@@ -1,6 +1,6 @@
 defmodule SpurerWeb.DemoSvelte do
   # In Phoenix v1.6+ apps, the line is typically: use MyAppWeb, :live_view
-  use Phoenix.LiveView
+  use SpurerWeb, :live_view
   use LiveSvelte.Components
 
   def render(assigns) do
