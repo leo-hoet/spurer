@@ -10,12 +10,12 @@ defmodule Spurer.Application do
     topologies = [
       example: [
         strategy: Cluster.Strategy.Epmd,
-        config: [hosts: [:"host1@127.0.0.1", :"host2@127.0.0.1"]],
+        config: [hosts: [:"host1@127.0.0.1", :"host2@127.0.0.1"]]
       ]
     ]
 
-
     children = [
+      {NodeJS.Supervisor, [path: LiveSvelte.SSR.NodeJS.server_path(), pool_size: 4]},
       # Start the Telemetry supervisor
       SpurerWeb.Telemetry,
       # Start the Ecto repository
@@ -30,7 +30,7 @@ defmodule Spurer.Application do
       # {Spurer.Worker, arg},
       {Registry, [keys: :unique, name: Spurer.BucketRegistry]},
       {DynamicSupervisor, strategy: :one_for_one, name: Spurer.BucketSupervisor},
-      {Cluster.Supervisor, [topologies, [name: MyApp.ClusterSupervisor]]},
+      {Cluster.Supervisor, [topologies, [name: MyApp.ClusterSupervisor]]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

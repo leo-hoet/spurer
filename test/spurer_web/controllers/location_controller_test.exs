@@ -49,7 +49,10 @@ defmodule SpurerWeb.LocationControllerTest do
   describe "update location" do
     setup [:create_location]
 
-    test "renders location when data is valid", %{conn: conn, location: %Location{id: id} = location} do
+    test "renders location when data is valid", %{
+      conn: conn,
+      location: %Location{id: id} = location
+    } do
       conn = put(conn, ~p"/api/locations/#{location}", location: @update_attrs)
       assert %{"id" => ^id} = json_response(conn, 200)["data"]
 
